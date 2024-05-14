@@ -1,119 +1,149 @@
-<h1>ExpNo 4 : Implement A* search algorithm for a Graph</h1> 
-<h3>Name: SOUVIK KUNDU</h3>
-<h3>Register Number: 212221230105</h3>
+<h1>ExpNo 9: Solve Wumpus World Problem using Python demonstrating Inferences from Propositional Logic</h1> >
 <H3>Aim:</H3>
-<p>To ImplementA * Search algorithm for a Graph using Python 3.</p>
-<H3>Algorithm:</H3>
+<p>
+    To solve  Wumpus World Problem using Python demonstrating Inferences from Propositional Logic
+</p>
+<h1>Problem Description</h1>
+<hr>
+<h2>Wumpus World</h2>
+<hr>
+The Wumpus world is a simple world example to illustrate the worth of a knowledge-based agent and to represent knowledge representation.
 
-``````
-// A* Search Algorithm
-1.  Initialize the open list
-2.  Initialize the closed list
-    put the starting node on the open 
-    list (you can leave its f at zero)
+The figure below shows a Wumpus world containing one pit and one Wumpus. There is an agent in room [1,1]. The goal of the agent is to exit the Wumpus world alive. The agent can exit the Wumpus world by reaching room [4,4]. The wumpus world contains exactly one Wumpus and one pit. There will be a breeze in the rooms adjacent to the pit, and there will be a stench in the rooms adjacent to Wumpus.
 
-3.  while the open list is not empty
-    a) find the node with the least f on 
-       the open list, call it "q"
+![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/cd6b68dc-c79f-4dcb-8126-04da90d65912)
 
-    b) pop q off the open list
-  
-    c) generate q's 8 successors and set their 
-       parents to q
-   
-    d) for each successor
-        i) if successor is the goal, stop search
+<center>Wumpus World Representation</center>
+<p>
+This is a python program that uses propositional logic sentences to check which rooms are safe. 
+
+It is assumed that there will always be a safe path that the agent can take to exit the Wumpus world. The logical agent can take four actions: Up, Down, Left and Right. These actions help the agent move from one room to an adjacent room. The agent can perceive two things: Breeze and Stench.
+</p>
+
+## PROGRAM:                                                                                  
+                                                                            
+```
+# DEVELOPED BY : MOHAMED ASIL M
+# REGISTER NO : 212222230080
+
+wumpus=[["Save","Breeze","PIT","Breeze"],
+        ["Smell","Save","Breeze","Save"],
+        ["WUMPUS","GOLD","PIT","Breeze"],
+        ["Smell","Save","Breeze","PIT"]]
+row=0
+column=0
+arrow=True
+player=True
+score=0
+while(player):
+    choice=input("press u to move up\npress d to move down\npress l to move left\npress r to move right\n")
+    if choice == "u":
+        if row != 0:
+            row-=1
+        else:
+            print("move denied")
         
-        ii) else, compute both g and h for successor
-          successor.g = q.g + distance between 
-                              successor and q
-          successor.h = distance from goal to 
-          successor (This can be done using many 
-          ways, we will discuss three heuristics- 
-          Manhattan, Diagonal and Euclidean 
-          Heuristics)
-          
-          successor.f = successor.g + successor.h
+        print("current location: ",wumpus[row][column],"\n")
+    elif choice == "d" :
+        if row!=3:
+            row+=1
+        else:
+            print("move denied")
+        
+        print("current location: ",wumpus[row][column],"\n")
+    elif choice == "l" :
+        if column!=0:
+            column-=1
+        else:
+            print("move denied")
+        
+        print("current location: ",wumpus[row][column],"\n")
+    elif choice == "r" :
+        if column!=3:
+            column+=1
+        else:
+            print("move denied")
+        
+        print("current location: ",wumpus[row][column],"\n")
+    else:
+        print("move denied")
 
-        iii) if a node with the same position as 
-            successor is in the OPEN list which has a 
-           lower f than successor, skip this successor
+    if wumpus[row][column]=="Smell" and arrow != False:
+        arrow_choice=input("do you want to throw an arrow-->\npress y to throw\npress n to save your arrow\n")
+        if arrow_choice == "y":
+            arrow_throw=input("press u to throw up\npress d to throw down\npress l to throw left\npress r to throw right\n")
+            if arrow_throw == "u":
+                if wumpus[row-1][column] == "WUMPUS":
+                    print("wumpus killed!")
+                    score+=1000
+                    print("score: ",score)
+                    wumpus[row-1][column] = "Save"
+                    wumpus[1][0]="Save"
+                    wumpus[3][0]="Save"
+                else:
+                    print("arrow wasted...")
+                    score-=10
+                    print("score: ",score)
+            elif arrow_throw == "d":
+                if wumpus[row+1][column] == "WUMPUS":
+                    print("wumpus killed!")
+                    score+=1000
+                    print("score: ",score)
+                    wumpus[row+1][column] = "Save"
+                    wumpus[1][0]="Save"
+                    wumpus[3][0]="Save"
+                else:
+                    print("arrow wasted...")
+                    score-=10
+                    print("score: ",score)
+            elif arrow_throw == "l":
+                if wumpus[row][column-1] == "WUMPUS":
+                    print("wumpus killed!")
+                    score+=1000
+                    print("score: ",score)
+                    wumpus[row][column-1] = "Save"
+                    wumpus[1][0]="Save"
+                    wumpus[3][0]="Save"
+                else:
+                    print("arrow wasted...")
+                    score-=10
+                    print("score: ",score)
+            elif arrow_throw == "r":
+                if wumpus[row][column+1] == "WUMPUS":
+                    print("wumpus killed!")
+                    score+=1000
+                    print("score: ",score)
+                    wumpus[row][column+1] = "Save"
+                    wumpus[1][0]="Save"
+                    wumpus[3][0]="Save"
+                else:
+                    print("arrow wasted...")
+                    score-=10
+                    print("score: ",score)
+                
+            
+            arrow=False
+    if wumpus[row][column] == "WUMPUS" :
+        score-=1000
+        print("\nWumpus here!!\n You Die\nAnd your score is: ",score
+              ,"\n")
+        break
+    if(wumpus[row][column]=='GOLD'):
+        score+=1000
+        print("GOLD FOUND!You won....\nYour score is: ",score,"\n")
+        break
+    if(wumpus[row][column]=='PIT'):
+        score-=1000
+        print("Ahhhhh!!!!\nYou fell in pit.\nAnd your score is: ",score,"\n")
+        break
+```
 
-        iV) if a node with the same position as 
-            successor  is in the CLOSED list which has
-            a lower f than successor, skip this successor
-            otherwise, add  the node to the open list
-     end (for loop)
-  
-    e) push q on the closed list
-    end (while loop)
-
-``````
-
 <hr>
-<h2>Sample Graph I</h2>
+<h1>Sample Input and Output:</h1>
 <hr>
 
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/b1377c3f-011a-4c0f-a843-516842ae056a)
+![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/8696111a-a4a7-47cb-ba4b-43a4ef88573f)
+![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/4be5bf06-79fa-4fa0-9334-38a33f06060b)
 
-<hr>
-<h2>Sample Input</h2>
-<hr>
-10 14 <br>
-A B 6 <br>
-A F 3 <br>
-B D 2 <br>
-B C 3 <br>
-C D 1 <br>
-C E 5 <br>
-D E 8 <br>
-E I 5 <br>
-E J 5 <br>
-F G 1 <br>
-G I 3 <br>
-I J 3 <br>
-F H 7 <br>
-I H 2 <br>
-A 10 <br>
-B 8 <br>
-C 5 <br>
-D 7 <br>
-E 3 <br>
-F 6 <br>
-G 5 <br>
-H 3 <br>
-I 1 <br>
-J 0 <br>
-<hr>
-<h2>Sample Output</h2>
-<hr>
-Path found: ['A', 'F', 'G', 'I', 'J']
-
-
-<hr>
-<h2>Sample Graph II</h2>
-<hr>
-
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/acbb09cb-ed39-48e5-a59b-2f8d61b978a3)
-
-
-<hr>
-<h2>Sample Input</h2>
-<hr>
-6 6 <br>
-A B 2 <br>
-B C 1 <br>
-A E 3 <br>
-B G 9 <br>
-E D 6 <br>
-D G 1 <br>
-A 11 <br>
-B 6 <br>
-C 99 <br>
-E 7 <br>
-D 1 <br>
-G 0 <br>
-<hr>
-<h2>Sample Output</h2>
-<hr>
-Path found: ['A', 'E', 'D', 'G']
+# RESULT:
+   Therefore,Wumpus World Problem using Python demonstrating Inferences from Propositional Logic solved successfully.
